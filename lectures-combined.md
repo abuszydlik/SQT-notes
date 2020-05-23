@@ -64,7 +64,7 @@ JUnit offers an _@ParameterizedTest_ annotation which enables to provide a list 
 # STRUCTURAL TESTING
 Techniques of testing which utilize the source code itself as a source of information to create tests are called _structural testing_.   Because of coverage criteria it is "easy" to know when to stop testing a software system while doing structural tests. It is more objective and implementation-aware compared to specification-based testing, structural testing should ideally be used to complement specification-based tests.
 
-There exist different _coverage criteria_ (percentage of production code that is exercised by tests):  
+## There exist different _coverage criteria_ (percentage of production code that is exercised by tests):  
 * line (statement) coverage  
 * block coverage  
 * branch (decision) coverage  
@@ -91,179 +91,180 @@ __MC/DC (modified condition/decision coverage)__ - looks at the combinations of 
 _Criteria subsumption_ - if a strategy X subsumes strategy Y, then all elements exercised by Y are also exercised by X For example branch coverage subsumes line coverage (because having tested 100% of branches automatically means that 100% of lines must have been tested).
 
 # MODEL-BASED TESTING
-Model is a simpler way to describe the program under test, it hold some of the attributes of the program for which it was built and gives a structured way to understand how the program operates.
+_Model_ is a simpler way to describe the program under test, it hold some of the attributes of the program for which it was built and gives a structured way to understand how the program operates.
 
-Decision tables - used to model how a particular combination of conditions should lead to a certain action, they are easy to understand and can be validated by the client. Decision tables can be used to derive tests verifying whether the requirements were correctly implemented with respect to conditions.
+_Decision tables_ - used to model how a particular combination of conditions should lead to a certain action, they are easy to understand and can be validated by the client. Decision tables can be used to derive tests verifying whether the requirements were correctly implemented with respect to conditions.
 
-Conditions represented in a decision table should always be independent of each other and their order should not matter. In some cases, the value of a condition may not influence the action - we call that a "don't care" (dc) value.
+Conditions represented in a decision table should always be independent of each other and their order should not matter. In some cases, the value of a condition may not influence the action - we call that a _don't care_ (_dc_) value.
 
-Number of conditions in a table can be limited by using default action. A default action should be the result if a combination of outcomes is not present in the table.
+Number of conditions in a table can be limited by using _default action_. A default action should be the result if a combination of outcomes is not present in the table.
 
-Deriving tests from decision tables:
-a) all explicit variants - test case for each column (as many tests as there are columns)
-b) all possible variant - test case for each possible combination (2^N tests, unrealistic)
-c) every unique outcome - one test for each single outcome or action (as many tests as actions)
-d) each condition T/F - each condition is true and false at least once (usually only two tests)
-e) MC/DC - often optimal solution
+## Deriving tests from decision tables:  
+* all explicit variants - test case for each column (as many tests as there are columns)  
+* all possible variant - test case for each possible combination (2^N tests, unrealistic)  
+* every unique outcome - one test for each single outcome or action (as many tests as actions)  
+* each condition T/F - each condition is true and false at least once (usually only two tests)  
+* MC/DC - often optimal solution  
 
-Decision tables can be generalized to non-binary (non-boolean) choices which can be useful in small tables; however they also make the number of possible variants grow even faster. Some strategies like "pair-wise combinatorial testing" may be employed to achieve better scalability.
+_Decision tables_ can be generalized to non-binary (non-boolean) choices which can be useful in small tables; however they also make the number of possible variants grow even faster. Some strategies like _pair-wise combinatorial testing_ may be employed to achieve better scalability.
 
-General guidelines for decision tables:
-a) keep conditions independent
-b) use DC values when possible
-c) variants with DC values should not overlap (or at least have the same action)
-d) add a default column (for all variants not in the decision table)
-e) consider non-boolean conditions if conditions are mutually exclusive
-f) if most conditions are non-boolean consider using a different technique
+## General guidelines for decision tables:  
+* keep conditions independent  
+* use DC values when possible  
+* variants with DC values should not overlap (or at least have the same action)  
+* add a default column (for all variants not in the decision table)  
+* consider non-boolean conditions if conditions are mutually exclusive  
+* if most conditions are non-boolean consider using a different technique  
 
-State machines - used to describe a system by its states and transitions between them. The states describe where a program is in execution, the transitions are actions that take the system from one state to another. State machine also has an initial state (state in which the system starts operating) and events (describe what has to happen for a transition to occur). Aa transition that happens only if a certain condition is met is called a conditional transition.
+_State machines_ - used to describe a system by its states and transitions between them. The _states_ describe where a program is in execution, the _transitions_ are actions that take the system from one state to another. State machine also has an _initial state_ (state in which the system starts operating) and _events_ (describe what has to happen for a transition to occur). A transition that happens only if a certain condition is met is called a _conditional transition_.
 
-Errors types possible to find with state machines:
-a) transition to a wrong state
-b) wrong conditions in conditional transition
-c) wrong action in a transition
-d) variable behavior in a state
+## Error types possible to find with state machines:  
+* transition to a wrong state  
+* wrong conditions in conditional transition  
+* wrong action in a transition  
+* variable behavior in a state  
 
-Main ways to define test coverage for a state machine based test suite:
-a) state coverage - each state has to be reached at least once
-b) transition coverage - each transition has to be exercised at least once
-c) paths - combinations of transitions
+## Main ways to define test coverage for a state machine based test suite:  
+* state coverage - each state has to be reached at least once  
+* transition coverage - each transition has to be exercised at least once  
+* paths - combinations of transitions  
 
-Transition tree - a diagram spanning the graph of state machine where the root is the initial state and ancestors of a lowest level represent some unique path through (several) states. From a complete transition tree we can derive tests.
+_Transition tree_ - a diagram spanning the graph of state machine where the root is the initial state and ancestors of a lowest level represent some unique path through (several) states. From a complete transition tree we can derive tests.
 
-Sneak path is a path in the state machine that should not exist (that is a way to move between two states that is not a valid transition). Sneak paths can be found by using a transition table (states along the rows and triggering events along the columns).
+_Sneak path_ - a path in the state machine that should not exist (that is a way to move between two states that is not a valid transition). Sneak paths can be found by using a _transition table_ (states along the rows and triggering events along the columns).
 
-Super state is a state that consists of its own state machine where any transition going into a super state goes to its initial state. Super states enable modularisation of a state machine by shifting focus to a particular part of system's behaviour.
+_Super state_ is a state that consists of its own state machine where any transition going into a super state goes to its initial state. Super states enable modularisation of a state machine by shifting focus to a particular part of system's behaviour.
 
 A super state can be split into multiple orthogonal (independent) regions, each region contains one state machine and when the system enters the super state, it goes into the initial state of all internal regions.
 
-OOP classes often correspond to small state machines, there exist two types of methods in such classes:
-a) inspection methods - provide information about current state
-b) trigger methods - bring the class into a new state
+## OOP classes often correspond to small state machines, there exist two types of methods in such classes:  
+* inspection methods - provide information about current state  
+* trigger methods - bring the class into a new state  
 Because of that a test scenario utilizing a state machine is a series of calls to the class' trigger methods. If the state machine spans several classes it can be considered as an end-to-end test.
 
-DESIGN BY CONTRACTS
-Self-testing moves a part of the test suite into the production code itself (without added redundancy of test classes). In-code assertions allow the system to check whether it is running correctly during the execution of a program, if anything is not working as intended an error will be thrown. Although assertions do not replace unit tests because they are more general in nature, they can be used as a valuable extra safety measure
+# DESIGN BY CONTRACTS
+_Self-testing_ moves a part of the test suite into the production code itself (without added redundancy of test classes). In-code assertions allow the system to check whether it is running correctly during the execution of a program, if anything is not working as intended an error will be thrown. Although assertions do not replace unit tests because they are more general in nature, they can be used as a valuable extra safety measure
 
-Simplest form of self-testing are assertions created with Java keyword assert. They are a Boolean expression evaluated at run-time which should be true unless there is a bug in the program. In case when an assertion yields false, an AssertionError is thrown. Assertions aren't enabled by default in Java.
+Simplest form of self-testing are _assertions_ created with Java keyword `assert`. They are a Boolean expression evaluated at run-time which should be true unless there is a bug in the program. In case when an assertion yields `false`, an `AssertionError` is thrown. Assertions aren't enabled by default in Java.
 
-Hoare Triples - used to reason about a program with assertion, they consist of a set of pre-conditions {P}, a program A, and a set of post-conditions {Q}. A Hoare Triple is expressed as {P}A{Q} and says that if we know that {P} holds then after execution of A we end up in a state where {Q} holds. Conditions can be easily turned into assertions but it may be more optimal to do explicit checks in code.
+_Hoare Triples_ - used to reason about a program with assertion, they consist of a set of __pre-conditions__ {P}, a __program__ A, and a set of __post-conditions__ {Q}. A Hoare Triple is expressed as {P}A{Q} and says that if we know that {P} holds then after execution of A we end up in a state where {Q} holds. Conditions can be easily turned into assertions but it may be more optimal to do explicit checks in code.
 
 If the method's pre-conditions were not fully satisfied, the method might not guarantee its post-conditions.
 
-A type of condition that always has to hold (i.e. it is a pre and post-condition at the same time) is called an invariant - it should hold true throughout the entire lifetime of as system, object or data structure. Invariants can be checked by delegating the functionality to a checker method.
+A type of condition that always has to hold (i.e. it is a pre and post-condition at the same time) is called an _invariant_ - it should hold `true` throughout the entire lifetime of as system, object or data structure. Invariants can be checked by delegating the functionality to a checker method.
 
-Class invariant - condition that holds since the object's construction, every method can assume that when they start the invariant holds; this means that a private method can leave the object with its invariant being false but the caller public method should then fix the object before terminating.
+_Class invariant_ - condition that holds since the object's construction, every method can assume that when they start the invariant holds; this means that a private method can leave the object with its invariant being `false` but the caller public method should then fix the object before terminating.
 
-Design by contracts - in a system where a client uses the server's API, they are bound by contract; as long as the client uses methods properly, the server guarantees to return correct results. In such design, contracts are represented by interfaces used by client and implemented on the server. Following subcontracting principles have to hold:
-a) pre-conditions of a new implementation have to be weaker (or as weak as) pre-conditions on interface
-b) post-conditions of a new implementation should be stronger (or as strong as) on interface
-c) invariant of a new implementation should be stronger (or as strong as) on interface
-This is summarized with a rule "require no more, ensure no less"
+_Design by contracts_ - in a system where a client uses the server's API, they are bound by contract; as long as the client uses methods properly, the server guarantees to return correct results. In such design, contracts are represented by interfaces used by client and implemented on the server. Following subcontracting principles have to hold:  
+1. pre-conditions of a new implementation have to be weaker (or as weak as) pre-conditions on interface  
+2. post-conditions of a new implementation should be stronger (or as strong as) on interface  
+3. invariant of a new implementation should be stronger (or as strong as) on interface  
+This is summarized with a rule _require no more, ensure no less_  
 
-Liskov Substitution Principle - stats that if we have a class T and this class has some sub-classes, the clients of class T should be able to choose any of T's sub-classes. To test whether the classes follow LSP one should create an inheritance hierarchy for test classes where the super class obtains a test suite for its public methods which are then executed by its sub-classes. This is called parallel class hierarchy.
+_Liskov Substitution Principle_ - states that if we have a class `T` and this class has some sub-classes, the clients of class `T` should be able to choose any of `T`'s sub-classes. To test whether the classes follow LSP one should create an inheritance hierarchy for test classes where the super class obtains a test suite for its public methods which are then executed by its sub-classes. This is called _parallel class hierarchy_.
 
-Factory Method desing pattern - used to ensure that the super test class executes its tests in the correct subclass. Super test class defines an abstract method that returns an instance with interface type, this forces the child test classes to override it and all general interface test methods will be executed while running the test suite.
+_Factory Method desing pattern_ - used to ensure that the super test class executes its tests in the correct subclass. Super test class defines an abstract method that returns an instance with interface type, this forces the child test classes to override it and all general interface test methods will be executed while running the test suite.
 
-PROPERTY-BASED TESTING
-Given that some properties of an object should always hold, it is possible to test them with any input that we like, for example by employing a generator to quickly try a large number of different inputs. If we find an input value that makes the assertion fail, we can check that the property doesn't hold. Original implementation of this idea was developed for Haskell as QuickCheck, Java uses jqwik.
+# PROPERTY-BASED TESTING
+Given that some properties of an object should always hold, it is possible to test them with any input that we like, for example by employing a generator to quickly try a large number of different inputs. If we find an input value that makes the assertion fail, we can check that the property doesn't hold. Original implementation of this idea was developed for Haskell as __QuickCheck__, Java uses __jqwik__.
 
-Property-based testing startegy:
-a) define properties with @Property
-b) add parameters to the annotated method, they will be automatically generated by jqwik
-c) jqwik handles the number of inputs
-d) once jqwik finds a value that breaks the property, it tries to find a smaller input that still makes the property fail.
-@Provide annotation can be used for a method that is source for developer-defined values.
+## Property-based testing startegy:  
+1. define properties with @Property  
+2. add parameters to the annotated method, they will be automatically generated by jqwik  
+3. jqwik handles the number of inputs  
+4. once jqwik finds a value that breaks the property, it tries to find a smaller input that still makes the property fail.  
+@Provide annotation can be used for a method that is source for developer-defined values.  
 
-THE TESTING PYRAMID
-Testing a system may be done on several different levels:
-a) unit testing - testing a single feature in isolation from other. 
-b) integration testing - tests multiple components together focusing on their interaction
-c) system testing - exercises the whole system at once
-d) manual testing - difficult and error prone but sometimes cannot be avoided (exploratory testing)
+# THE TESTING PYRAMID
+## Testing a system may be done on several different levels:  
+1. unit testing - testing a single feature in isolation from other  
+2. integration testing - tests multiple components together focusing on their interaction  
+3. system testing - exercises the whole system at once  
+4. manual testing - difficult and error prone but sometimes cannot be avoided (_exploratory testing_)  
 Testing pyramid is a model with unit testing at the bottom and manual testing at the top. It states that testers should favour unit tests to integration tests, integration tests to system tests, system tests to manual testing. Climbing levels of testing pyramid increases complexity and reality of tests.
 
-Unit tests are fast, easy to control and easy to write; however they lack reality and bugs stemming from integration of several components can never be caught. They should be written when a component is about an algorithm or a single piece of business logic in the system.
+__Unit tests__ are fast, easy to control and easy to write; however they lack reality and bugs stemming from integration of several components can never be caught. They should be written when a component is about an algorithm or a single piece of business logic in the system.
 
-Integration tests aren't a lot more complex than unit tests while offering increased testing capabilities; however they may require additional effort while working with external dependencies (for example setting up an instance of a database). They should be written whenever a component interacts with other external components.
+__Integration tests__ are a more complex than unit tests but offer increased testing capabilities; however they may require additional effort while working with external dependencies (for example setting up an instance of a database). They should be written whenever a component interacts with other external components.
 
-System testing is realistic and better at stimulating user interaction; however they are slower, more difficult to write and can be flaky (might pass or fail for the same configuration). System tests should be written for the most crucial components of the system.
+__System testing__ is realistic and better at stimulating user interaction; however they are slower, more difficult to write and can be _flaky_ (might pass or fail for the same configuration). System tests should be written for the most crucial components of the system.
 
-Test sizes at Google:
-a) small tests - executed by a single process, don't use external components; fast and not flaky
-b) medium tests - can span multiple processes, use threads and make external calls
-c) large tests - may require calls to multiple machines, full end-to-end tests
+## Test sizes at Google:  
+1. small tests - executed by a single process, don't use external components; fast and not flaky  
+2. medium tests - can span multiple processes, use threads and make external calls  
+3. large tests - may require calls to multiple machines, full end-to-end tests  
 
-TEST DOUBLES
-Doubles are objects used to mimic the behaviour of some component, it is possible to make them behave in such a way that would be expected in the particular context while not requiring construction of the whole dependency. Advantages of test doubles:
-a) more control - they don't require complicated setup to achieve a particular behavior (for example throwing an exception or using datetime)
-b) faster - they don't require external communication with webservice or database
+# TEST DOUBLES
+_Doubles_ are objects used to mimic the behaviour of some component, it is possible to make them behave in such a way that would be expected in the particular context while not requiring construction of the whole dependency. 
+## Advantages of test doubles:
+* more control - they don't require complicated setup to achieve a particular behavior (for example throwing an exception)  
+* faster - they don't require external communication with webservice or database  
 It is important to be careful while using test doubles (mocks) since it may lead to testing mock and not the actual code
 
-Five types of test doubles:
-a) dummy objects - passed to the class but never really used (for example as a required parameter)
-b) fake object - have a real implementation (it is simpler than that of a mimicked object)
-c) stubs - provide hard-coded answers to calls, they don't have an actual implementation
-d) spies - obseve and record the interaction with a dependency
-e) mocks - act like stubs but are pre-configured with explicit definition of interactions
+## Five types of test doubles:
+1. dummy objects - passed to the class but never really used (for example as a required parameter)  
+2. fake object - have a real implementation (it is simpler than that of a mimicked object)  
+3. stubs - provide hard-coded answers to calls, they don't have an actual implementation  
+4. spies - obseve and record the interaction with a dependency  
+5. mocks - act like stubs but are pre-configured with explicit definition of interactions  
 
-Mockito is a testing framework which enables mocking, stubbing and spying on dependencies. It is a good practice to pass dependencies in the constructor of the class because it enables easier mocking. Mockito does not allow stubbing static methods (enemies of testability) so in order to test such a method we should create an abstraction on top of static call (interface). An interface can easily be stubbed or mocked.
+_Mockito_ is a testing framework which enables mocking, stubbing and spying on dependencies. It is a good practice to pass dependencies in the constructor of the class because it enables easier mocking. Mockito does not allow stubbing static methods (_"enemies of testability"_) so in order to test such a method we should create an abstraction on top of static call (interface). An interface can easily be stubbed or mocked.
 
-Command-Query Separation (CQS) is a concept where command methods (ones that perform action on a system) and query methods (ones that return data to the caller) should be kept functionally separate, that is any one method should not be command and query at the same time.
+_Command-Query Separation (CQS)_ - concept where __command methods__ (ones that perform action on a system) and __query methods__ (ones that return data to the caller) should be kept functionally separate, that is any one method should not be command and query at the same time.
 
-Dependencies primarily should be mocked when:
-a) they are too slow
-b) they communicate with external infrastructure
-c) have hard to simulate behavior
+## Dependencies primarily should be mocked when:  
+* they are too slow  
+* they communicate with external infrastructure  
+* have hard to simulate behavior  
 
-Developers tend not to mock:
-a) entities
-b) native libraries and utility methods
+## Developers tend not to mock:  
+* entities  
+* native libraries and utility methods  
 
-Best practices when mocking for interaction testing:
-a) only mock types you own (so to mock a class from external library first build an abstraction on top)
-b) write tests for interactions that shouldn't happen as well (bad weather)
-c) focus on the part of interaction that really matters (no overspecification)
-d) don't mock objects which have no relationships
-e) don't add extra behaviour to mocks
-f) mock only closest neighbours of a class
-g) avoid too many mocks
+## Best practices when mocking for interaction testing:  
+1. only mock types you own (so to mock a class from external library first build an abstraction on top) 
+2. write tests for interactions that shouldn't happen as well (bad weather) 
+3. focus on the part of interaction that really matters (no overspecification) 
+4. don't mock objects which have no relationships 
+5. don't add extra behaviour to mocks 
+6. mock only closest neighbours of a class  
+7. avoid too many mocks  
 
-Test doubles at Google:
-a) using test doubles requires the system to be designed for testability
-b) test doubles have to be as faithful as possible which may be challenging
-c) if possible opt for the actual implementation
-d) trade-offs to consider include execution time of the real implementation
-e) prefer fakes over mocks
-f) avoid excessive mocking
-g) prefer state testing over interaction testing - assert the change in state
-h) use interaction testing when state testing is not possible
-i) avoid overspecified interaction tests
-j) good interaction testing requires strict guidelines
-
-DESIGN FOR TESTABILITY
+## Test doubles at Google:  
+* using test doubles requires the system to be designed for testability  
+* test doubles have to be as faithful as possible which may be challenging  
+* if possible opt for the actual implementation  
+* trade-offs to consider include execution time of the real implementation  
+* prefer fakes over mocks  
+* avoid excessive mocking  
+* prefer state testing over interaction testing - assert the change in state  
+* use interaction testing when state testing is not possible  
+* avoid overspecified interaction tests  
+* good interaction testing requires strict guidelines  
+ 
+# DESIGN FOR TESTABILITY
 Set of best practices that ensure a system is build in such a way that it is easy to write tests.
 
-Dependency injection - a class asks for the dependency (via constructor or setters) instead of instantiating the dependency by itself. It improves the code by:
-a) enabling to mock/stub the dependencies
-b) making dependencies more explicit
-c) better separation of concerns (class does not need to worry how to build its dependencies)
-d) better extensibility (class may work with different implementations of dependencies)
+_Dependency injection_ - a class asks for the dependency (via constructor or setters) instead of instantiating the dependency by itself.  ## It improves the code by:  
+* enabling to mock/stub the dependencies  
+* making dependencies more explicit  
+* better separation of concerns (class does not need to worry how to build its dependencies)  
+* better extensibility (class may work with different implementations of dependencies)  
 
-Separation of domain and infrastructure:
-- domain is where the business rules, logic, services, etc. exist (core of the program);
-- infrastructure is code that handles communication with outside world (database, webservices, etc.)
+## Separation of domain and infrastructure:  
+* domain is where the business rules, logic, services, etc. exist (core of the program)  
+* infrastructure is code that handles communication with outside world (database, webservices, etc.)  
 
-Ports and adapters (hexagonal architecture) - idea that domain depends on "ports" rather than directly on infrastructure, the ports define exactly what the infrastructure should do. Adapters are close to infrastructure, they are implementations of ports that talk with external services. Communication happens between ports and adapters ensuring separation of domain and infrastructure concerns.
+_Ports and adapters (hexagonal architecture)_ - idea that domain depends on _ports_ rather than directly on infrastructure, the ports define exactly what the infrastructure should do. _Adapters_ are close to infrastructure, they are implementations of ports that talk with external services. Communication happens between ports and adapters ensuring separation of domain and infrastructure concerns.
 
-Dependency inversion principle:
-- high level modules should not depend on low-level modules
-- abstractions should not depend on details
+## Dependency inversion principle:  
+* high level modules should not depend on low-level modules  
+* abstractions should not depend on details  
 
-Tips on designing for testability:
-a) cohesive classes (designed to do only one thing) are easier to test; non-cohesive classes can split into several smaller classes
-b) high coupling (large number of classes that a class depends on) decreases testability; refactoring workds by grouping dependencies together into a higher abstraction
-c) complex conditions decrease testability; can be refactored by spreading the problem into multiple smaller conditions
-d) private methods should be tested via their public methods; if a private method is complex and it seems that it needs to be tested separately, then it should be extracted and tested normally
-e) static methods decrease testability; if a system has to depend on a static method then a layer of abstraction should be added on top of it (e.g. when using external frameworks and libraries)
+## Tips on designing for testability:
+1. cohesive classes (designed to do only one thing) are easier to test; non-cohesive classes can split into several smaller classes  
+2. high coupling (large number of classes that a class depends on) decreases testability; refactoring workds by grouping dependencies together into a higher abstraction  
+3. complex conditions decrease testability; can be refactored by spreading the problem into multiple smaller conditions  
+4. private methods should be tested via their public methods; if a private method is complex and it seems that it needs to be tested separately, then it should be extracted and tested normally  
+5. static methods decrease testability; if a system has to depend on a static method then a layer of abstraction should be added on top of it (e.g. when using external frameworks and libraries)  
 High quality software is only achieved when the system is designed with testability in mind.
