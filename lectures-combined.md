@@ -1,96 +1,96 @@
-SOFTWARE TESTING AUTOMATION
-AAA structure of automated tests:
-Arrange - define all input values that will be passed to class/method under test
-Act - call behavior under test passing the previously set input values
-Assert - check whether the system behaved as was expected
+# SOFTWARE TESTING AUTOMATION  
+## AAA structure of automated tests:  
+* Arrange - define all input values that will be passed to class/method under test  
+* Act - call behavior under test passing the previously set input values  
+* Assert - check whether the system behaved as was expected  
 
-Failure - component of the system not behaving as expected.
-Fault (defect, bug) - underlying flaw in a component that caused the system to behave incorrectly.
-Error (mistake) - human action that caused the system to run not as expected.
+Failure - component of the system not behaving as expected.  
+Fault (defect, bug) - underlying flaw in a component that caused the system to behave incorrectly.  
+Error (mistake) - human action that caused the system to run not as expected.  
 
-Validation (are we building the right software?) - concerns features
-Verification (are we building the system right?) - concerns proper system behavior
+Validation (are we building the right software?) - concerns features  
+Verification (are we building the system right?) - concerns proper system behavior  
 
-Principles of software testing:
-a) exhaustive testing is impossible
-b) bugs are not uniformly distributed
-c) program testing can be used to show the presence of bugs, but not their absence
-d) no single testing strategy can guarantee that the software under test is bug-free (pesticide paradox)
-e) testing is context-dependent
+## Principles of software testing:  
+* exhaustive testing is impossible  
+* bugs are not uniformly distributed  
+* program testing can be used to show the presence of bugs, but not their absence  
+* no single testing strategy can guarantee that the software under test is bug-free (pesticide paradox)  
+* testing is context-dependent  
 
-SPECIFICATION-BASED TESTING
+# SPECIFICATION-BASED TESTING  
 Specification-based testing uses requirements of the program (UML, user stories) as input for testing,
-each input tackles one part (partition) of the program. Because it does not require knowledge of the software structure, it is also referred to as "black-box testing".
+each input tackles one part (_partition_) of the program. Because it does not require knowledge of the software structure, it is also referred to as _black-box testing_.
 
 To devise a good test suite, the program is split into classes where (1) each class is unique and (2) it is easy to verify whether the behavior for a given input is correct or not.
 
-Equivalence partitioning is an idea that a precise input for a particular partition does not matter because many inputs exercise the software in the same way.
+_Equivalence partitioning_ is an idea that a precise input for a particular partition does not matter because many inputs exercise the software in the same way.
 
-Category-Partition method (systematic way of driving test cases):
-a) identify parameters of the program (received classes and methods)
-b) derive characteristics of each parameter
-c) add constraints to minimize the test suite (invalid combinations, exceptional behaviors)
-d) generate combinations of the input values
+## Category-Partition method (systematic way of driving test cases):  
+* identify parameters of the program (received classes and methods)  
+* derive characteristics of each parameter  
+* add constraints to minimize the test suite (invalid combinations, exceptional behaviors)  
+* generate combinations of the input values  
 
-BOUNDARY TESTING
-Boundary is a specific point where the input changes from one partition to another:
-a) on-point - the value that is exactly on the boundary (seen directly in condition)
-b) off-point - the value that is closest to the boundary and flips the condition
-c) in-points - the values that make the condition true
-d) out-points - the values that make the condition false
+# BOUNDARY TESTING
+Boundary is a specific point where the input changes from one partition to another:  
+* on-point - the value that is exactly on the boundary (seen directly in condition)  
+* off-point - the value that is closest to the boundary and flips the condition  
+* in-points - the values that make the condition true  
+* out-points - the values that make the condition false  
 
-On and off points are also in and out points.
+On and off points are also in and out points.  
 
-JUnit offers an @ParameterizedTest annotation which enables to provide a list of input from a source (for example CSV or a generator method) for a particular method to exercise boundary test automatically for each tuple.
+JUnit offers an _@ParameterizedTest_ annotation which enables to provide a list of input from a source (for example CSV or a generator method) for a particular method to exercise boundary test automatically for each tuple.  
 
-CORRECT way of testing boundaries:
-a) conformance - test what happens when data does not conform to a required format
-b) ordering - make sure the program works even if data is not supplied in required order
-c) range - test what happens when inputs are outside of an expected range
-d) reference - when testing a method consider its references from outside of scope, external dependencies and other necessary conditions
-e) existence - check what happens if something that is expected to exist doesn't
-f) cardinality - test loops with zero, one, and multiple iterations
-g) time - does the system handle timeouts and concurrency well
+## CORRECT way of testing boundaries:  
+* conformance - test what happens when data does not conform to a required format  
+* ordering - make sure the program works even if data is not supplied in required order  
+* range - test what happens when inputs are outside of an expected range  
+* reference - when testing a method consider its references from outside of scope, external dependencies and other necessary conditions  
+* existence - check what happens if something that is expected to exist doesn't  
+* cardinality - test loops with zero, one, and multiple iterations  
+* time - does the system handle timeouts and concurrency well  
 
-Domain testing (combined equivalent classes analysis and boundary testing) strategy:
-a) read the requirements
-b) identify the input and output variables
-c) identify dependencies among input variables
-d) perofrm equivalent class analysis
-e) explore boundaries of found classes
-f) find a strategy to derive test cases (minimize costs and maximize fault detection)
-g) generate a set of test cases for system under test
+## Domain testing (combined equivalent classes analysis and boundary testing) strategy:  
+1. read the requirements  
+2. identify the input and output variables  
+3. identify dependencies among input variables  
+4. perofrm equivalent class analysis  
+5. explore boundaries of found classes  
+6. find a strategy to derive test cases (minimize costs and maximize fault detection)  
+7. generate a set of test cases for system under test  
 
-STRUCTURAL TESTING
-Techniques of testing which utilize the source code itself as a source of information to create tests are called structural testing. Because of coverage criteria it is "easy" to know when to stop testing a software system while doing structural tests. It is more objective and implementation-aware compared to specification-based testing, structural testing should ideally be used to complement specification-based tests.
+# STRUCTURAL TESTING
+Techniques of testing which utilize the source code itself as a source of information to create tests are called _structural testing_.   Because of coverage criteria it is "easy" to know when to stop testing a software system while doing structural tests. It is more objective and implementation-aware compared to specification-based testing, structural testing should ideally be used to complement specification-based tests.
 
-There exist different coverage criteria (percentage of production code that is exercised by tests):
-a) line (statement) coverage
-b) block coverage
-c) branch (decision) coverage
-d) condition (basic and condition+branch) coverage
-e) path coverage
-f) MC/DC coverage
+There exist different _coverage criteria_ (percentage of production code that is exercised by tests):  
+* line (statement) coverage  
+* block coverage  
+* branch (decision) coverage  
+* condition (basic and condition+branch) coverage  
+* path coverage  
+* MC/DC coverage  
 
-Line and statement coverage looks at the number of lines of code that are covered by at least one test, one of the biggest downsides of this type of coverage is that the number of lines may vary between developers and code conventions (nevertheless some development tools measure the coverage at the level of unique instructions for JVM which is more unified).
+__Line and statement coverage__ looks at the number of lines of code that are covered by at least one test. One of the biggest downsides of this type of coverage is that the number of lines may vary between developers and code conventions (nevertheless some development tools measure the coverage at the level of unique instructions for JVM which is more unified).
 
-Control-flow graph is a tool used to represent all paths that may be taken during the execution of a piece of code, it consists of basic blocks (statements executed together no matter what happens), decision blocks (statements that can create different branches), edges connect blocks (basic block always has one outgoing edge, decision blocks have two edges for "true" and "false").
+__Control-flow graph__ is a tool used to represent all paths that may be taken during the execution of a piece of code, it consists of _basic blocks_ (statements executed together no matter what happens), _decision blocks_ (statements that can create different branches), and _edges_ connecting blocks (basic block always has one outgoing edge, decision blocks have two edges for `true` and `false`).
 
-Block coverage counts the percentage of control-flow graph blocks covered, it does not depend on programing style of a developer.
+__Block coverage__ counts the percentage of control-flow graph blocks covered, it does not depend on programing style of a developer.
 
-Branch (decision) coverage counts the percentage of possible decision outcomes covered, a test suite achieves 100% branch coverage when all true/false edges on a control-flow graph are covered.
+__Branch (decision) coverage__ counts the percentage of possible decision outcomes covered, a test suite achieves 100% branch coverage when all true/false edges on a control-flow graph are covered.
 
-Condition coverage splits each compound condition into multiple decision blocks and requires exercising them separately, a test suite achieves 100% condition coverage when all the atomic conditions have been true and false at least once. In practice condition coverage is very often in form of branch+condition coverage which means that 100% of conditions and 100% of branches should be covered by test.
+__Condition coverage__ splits each compound condition into multiple decision blocks and requires exercising them separately, a test suite achieves 100% condition coverage when all the atomic conditions have been `true` and `false` at least once. In practice condition coverage is very often in form of branch+condition coverage which means that 100% of conditions and 100% of branches should be covered by test.
 
-Path coverage considers the full combination of the conditions in a decision, it can be understood as the number of singular paths (unique paths) in a control-flow diagram, where each atomic condition multiplies the number of paths by 2. Achieving 100% path coverage is very difficult and often even impossible (for example because of unbounded loops).
+__Path coverage__ considers the full combination of the conditions in a decision, it can be understood as the number of singular paths (unique paths) in a control-flow diagram, where each atomic condition multiplies the number of paths by 2. Achieving 100% path coverage is very difficult and often even impossible (for example because of unbounded loops).
 
-Loop boundary adequacy criterion - a test suite satisfies this criterion if and only if every loop is exercised zero, one, and multiple times.
+_Loop boundary adequacy criterion_ - a test suite satisfies this criterion if and only if every loop is exercised zero, one, and multiple times.
 
-MC/DC (modified condition/decision coverage) - looks at the combinations of conditions like path coverage but instead of aiming to test all possible combinations it is supposed to exercise each condition in such a way that every parameter influences the outcome at least once. On average achieving 100% MC/DC coverage requires N+1 tests where N is the number of atomic conditions in a decision. More than one set of tests achieving 100% MC/DC coverage may exist, in some expressions it may be impossible to achieve 100% coverage.
+__MC/DC (modified condition/decision coverage)__ - looks at the combinations of conditions like path coverage but instead of aiming to test all possible combinations it is supposed to exercise each condition in such a way that every parameter influences the outcome at least once. On average achieving 100% MC/DC coverage requires `N+1` tests where `N` is the number of atomic conditions in a decision. More than one set of tests achieving 100% MC/DC coverage may exist. In some expressions it may be impossible to achieve 100% coverage.
 
-Criteria subsumption - if a strategy X subsumes strategy Y, then all elements exercised by Y are also exercised by X, for example branch coverage subsumes line coverage (because having tested 100% of branches automatically means that 100% of lines must have been tested).
+_Criteria subsumption_ - if a strategy X subsumes strategy Y, then all elements exercised by Y are also exercised by X For example branch coverage subsumes line coverage (because having tested 100% of branches automatically means that 100% of lines must have been tested).
 
-MODEL-BASED TESTING
+# MODEL-BASED TESTING
 Model is a simpler way to describe the program under test, it hold some of the attributes of the program for which it was built and gives a structured way to understand how the program operates.
 
 Decision tables - used to model how a particular combination of conditions should lead to a certain action, they are easy to understand and can be validated by the client. Decision tables can be used to derive tests verifying whether the requirements were correctly implemented with respect to conditions.
