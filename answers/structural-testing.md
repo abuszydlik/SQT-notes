@@ -107,16 +107,16 @@ A test suite satisfies the _boundary adequacy criterion_ if for every loop L tes
 
 ## Exercise 15
 ((A and B) or C)
-   |     A     |     B     |     C     |   result    |
-   |----------:|----------:|----------:|------------:|
- 1 |     T     |     T     |     T     |      T      |
- 2 |     T     |     T     |     F     |      T      |
- 3 |     T     |     F     |     T     |      T      |
- 4 |     T     |     F     |     F     |      F      |
- 5 |     F     |     T     |     T     |      T      |
- 6 |     F     |     T     |     F     |      F      |
- 7 |     F     |     F     |     T     |      T      |
- 8 |     F     |     F     |     F     |      F      |
+  |     A     |     B     |     C     |   result    |
+  |----------:|----------:|----------:|------------:|
+  |     T     |     T     |     T     |      T      |
+  |     T     |     T     |     F     |      T      |
+  |     T     |     F     |     T     |      T      |
+  |     T     |     F     |     F     |      F      |
+  |     F     |     T     |     T     |      T      |
+  |     F     |     T     |     F     |      F      |
+  |     F     |     F     |     T     |      T      |
+  |     F     |     F     |     F     |      F      |
 
 For A we have:
 * {2, 6}  
@@ -124,16 +124,16 @@ For B we have:
 * {2, 4}
 For C we have: 
 * {3, 4}, {5, 6} {7, 8}  
-For MC/DC coverage we should strive for 3+1 = 4 tests so a possible test suite is {2, 3, 4, 6} or {2, 4, 5, 6}.
+For MC/DC coverage we should strive for 4 tests so a possible test suite is {2, 3, 4, 6} or {2, 4, 5, 6}.
 
 ## Exercise 16
 A and (A or B)
-   |     A     |     B     |   result    |
-   |----------:|----------:|------------:|
- 1 |     T     |     T     |      T      |
- 2 |     T     |     F     |      T      |
- 3 |     F     |     T     |      F      |
- 4 |     F     |     F     |      F      |
+  |     A     |     B     |   result    |
+  |----------:|----------:|------------:|
+  |     T     |     T     |      T      |
+  |     T     |     F     |      T      |
+  |     F     |     T     |      F      |
+  |     F     |     F     |      F      |
 For A we have:
 * {1, 3}, {2, 4}
 For B we don't have any possibilities, the expression is independent of B therefore it is impossible to achieve 100% MC/DC coverage. The expression could (and should) be simplified to `A`.
