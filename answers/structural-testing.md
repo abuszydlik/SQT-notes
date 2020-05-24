@@ -93,3 +93,47 @@ For decision coverage we have 6 edges to cover. T1 covers only 1 edge making the
 ## Exercise 10
 <img src=images/structural-testing-2.png>
 
+## Exercise 11
+To achieve 100% line coverage we need __at least 3__ tests. First tests covers lines 1 and 2, second test covers lines 1, 3-10, 14, 15 and the final test covers lines 1, 3-13.
+
+## Exercise 12
+To achieve 100% branch coverage we need __at least 4__ tests. First test returns `true` for condition `rf == null`, second test returns `false` for condition `e != null && oldValue != null`, third test returns `false` for condition `v == null` and finally last test returns `true` for the same condition.
+
+## Exercise 13
+Basic condition coverage does not subsume branch coverage (__4__).
+
+## Exercise 14
+A test suite satisfies the _boundary adequacy criterion_ if for every loop L test cases iterate L zero times, once, and more than once (__1__)
+
+## Exercise 15
+((A and B) or C)
+   |     A     |     B     |     C     |   result    |
+   |----------:|----------:|----------:|------------:|
+ 1 |     T     |     T     |     T     |      T      |
+ 2 |     T     |     T     |     F     |      T      |
+ 3 |     T     |     F     |     T     |      T      |
+ 4 |     T     |     F     |     F     |      F      |
+ 5 |     F     |     T     |     T     |      T      |
+ 6 |     F     |     T     |     F     |      F      |
+ 7 |     F     |     F     |     T     |      T      |
+ 8 |     F     |     F     |     F     |      F      |
+
+For A we have:
+* {2, 6}  
+For B we have:
+* {2, 4}
+For C we have: 
+* {3, 4}, {5, 6} {7, 8}  
+For MC/DC coverage we should strive for 3+1 = 4 tests so a possible test suite is {2, 3, 4, 6} or {2, 4, 5, 6}.
+
+## Exercise 16
+A and (A or B)
+   |     A     |     B     |   result    |
+   |----------:|----------:|------------:|
+ 1 |     T     |     T     |      T      |
+ 2 |     T     |     F     |      T      |
+ 3 |     F     |     T     |      F      |
+ 4 |     F     |     F     |      F      |
+For A we have:
+* {1, 3}, {2, 4}
+For B we don't have any possibilities, the expression is independent of B therefore it is impossible to achieve 100% MC/DC coverage. The expression could (and should) be simplified to `A`.
