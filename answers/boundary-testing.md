@@ -51,30 +51,30 @@ Answer __4__ is indeed true. We should check what happens if something that is e
 
 Category/partition method:
 1. Parameters include:
- * number of legs
- * presence of tail
- * number of lives left
- * presence of sharp nails
- * sound produced  
+   * number of legs
+   * presence of tail
+   * number of lives left
+   * presence of sharp nails
+   * sound produced  
 2. Characteristics of each parameter:
- * int legs [0, 2, 4, 6, ..., Integer.MAX_VALUE], [1, 3, 5, 7, ..., Integer.MAX_VALUE-1], [negative number]
- * boolean tail [`true`], [`false`]
- * int lives [0, 1, ..., 9], [10, 11, ..., Integer.MAX_VALUE], [negative number]
- * boolean nails[`true`], [`false`]
- * string sound [miauw], [woof], [neigh]
+   * int legs [0, 2, 4, 6, ..., Integer.MAX_VALUE], [1, 3, 5, 7, ..., Integer.MAX_VALUE-1], [negative number]
+   * boolean tail [`true`], [`false`]
+   * int lives [0, 1, ..., 9], [10, 11, ..., Integer.MAX_VALUE], [negative number]
+   * boolean nails[`true`], [`false`]
+   * string sound [miauw], [woof], [neigh]
 3. Constraints:
- * numberOfLegs <= 0 is exceptional
- * lives <= 0 is exceptional
- * lives > 10 can be only one combination
+   * numberOfLegs <= 0 is exceptional
+   * lives <= 0 is exceptional
+   * lives > 10 can be only one combination
 4. Test cases:
 * __Cat__:
- 1. [2, true, 5, true, miauw]
+   1. [2, true, 5, true, miauw]
 * __Not a cat__:
- 1. [3, true, 7, true, miauw]
- 2. [6, false, 6, true, miauw]
- 3. [4, true, 11, true, miauw]
- 4. [8, true, 4, false, miauw]
- 5. [2, true, 3, true, woof]
+   1. [3, true, 7, true, miauw]
+   2. [6, false, 6, true, miauw]
+   3. [4, true, 11, true, miauw]
+   4. [8, true, 4, false, miauw]
+   5. [2, true, 3, true, woof]
 * __Exceptional__:
- 1. [-2, true, 5, true, miauw]
- 2. [2, true, -1, true, miauw]
+   1. [-2, true, 5, true, miauw]
+   2. [2, true, -1, true, miauw]
