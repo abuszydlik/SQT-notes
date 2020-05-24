@@ -1,6 +1,6 @@
 # Structural testing answers
 ## Exercise 1
-To achueve 100% line coverage we need three tests for example:
+To achieve 100% line coverage we need three tests, for example:
 ```java
 class LinkedListTest {
 
