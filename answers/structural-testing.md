@@ -133,7 +133,7 @@ A and (A or B)
   |     T     |     T     |      T      |
   |     T     |     F     |      T      |
   |     F     |     T     |      F      |
-  |     F     |     F     |      F      |
+  |     F     |     F     |      F      |  
 For A we have:
 * {1, 3}, {2, 4}
 For B we don't have any possibilities, the expression is independent of B therefore it is impossible to achieve 100% MC/DC coverage. The expression could (and should) be simplified to `A`.
