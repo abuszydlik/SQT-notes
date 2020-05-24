@@ -68,14 +68,17 @@ class LinkedListTest {
 ```
 
 ## Exercise 5
-For A we have only a single pair:
+For A we have only a single pair:  
 * {2, 6}  
-For B we have pairs:
+
+For B we have pairs:  
 * {1, 3}
 * {2, 4}
 * {5, 7}
-For C we have again a single pair:
+
+For C we have again a single pair:  
 * {5, 6}  
+
 To achieve MC/DC coverage we should strive to have 3+1=4 tests. Let's take {2, 5, 6, 7} then A is tested with {2, 6}, B is tested with {5, 7} and C is tested with {5, 6}.
 
 ## Exercise 6
@@ -120,10 +123,13 @@ A test suite satisfies the _boundary adequacy criterion_ if for every loop L tes
 
 For A we have:
 * {2, 6}  
+
 For B we have:
 * {2, 4}
+
 For C we have: 
 * {3, 4}, {5, 6} {7, 8}  
+
 For MC/DC coverage we should strive for 4 tests so a possible test suite is {2, 3, 4, 6} or {2, 4, 5, 6}.
 
 ## Exercise 16
@@ -137,4 +143,5 @@ A and (A or B)
   
 For A we have:
 * {1, 3}, {2, 4}
+
 For B we don't have any possibilities, the expression is independent of B therefore it is impossible to achieve 100% MC/DC coverage. The expression could (and should) be simplified to `A`.
