@@ -26,4 +26,4 @@ void removeObjectWhenNotPresent() {
 ```
 
 ## Exercise 2
-![alt text](answers/images/structural-testing-1.png "Control-flow diagram for the method")
+<img src="answers/images/structural-testing-1.png">
