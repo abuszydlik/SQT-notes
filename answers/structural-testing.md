@@ -26,4 +26,4 @@ void removeObjectWhenNotPresent() {
 ```
 
 ## Exercise 2
-<img src="answers/images/structural-testing-1.png">
+<img src=answers/images/structural-testing-1.png>
