@@ -65,7 +65,7 @@ class LinkedListTest {
     assertFalse(list.remove(3));
   }
 }
-
+```
 
 ## Exercise 5
 For A we have only a single pair:
