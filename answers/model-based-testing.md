@@ -32,3 +32,56 @@ In total there is 6 transitions. The given test includes 4 transitions so its co
 
 ## Exercise 7
 There are 20 empty cells in the table hence there are 20 sneaky paths.
+
+## Exercise 8
+For condition C1 we have:
+ * {TTT, FTT}
+ * {FTF, TTF}
+ * {FFF, TFF}
+ * {FFT, TFT}  
+ 
+ For condition C2 we have:
+ * {TTT, TFT}
+ * {TFF, TTF}  
+ 
+ For condition C3 we have:
+ * {TTT, TTF}
+ * {FTF, FTT}
+ * {FFF, FFT}
+ * {TFF, TFT}
+ 
+In this case we actually need 6 tests because there are 6 possible outcomes of the method.
+
+## Exercise 9
+<img src=images/model-based-4.png>
+
+## Exercise 10
+<img src=images/model-based-5.png>
+
+## Exercise 11
+<img src=images/model-based-6.png>
+
+## Exercise 12
+<img src=images/model-based-7.png>
+
+## Exercise 13
+<img src=images/model-based-8.png>
+
+## Exercise 14
+
+|              |       |       |       |       |       |       |       |       |          
+|-------------:|------:|------:|------:|------:|------:|------:|------:|------:|
+|  JPG format  |  T    |  T    |  T    |  T    |  F    |  F    |  F    |  F    |
+|less than 20MB|  T    |  T    |  F    |  F    |  T    |  T    |  F    |  F    |
+|   high res   |  T    |  F    |  T    |  F    |  T    |  F    |  T    |  F    |
+|              |success|success|failure|failure|failure|failure|failure|failure|  
+
+## Exercise 15
+
+|                        |              |              |              |
+|-----------------------:|-------------:|-------------:|-------------:|
+|active in past two weeks|       T      |       T      |       T      |    
+|got add during last hour|       F      |       F      |       F      |
+|has over 1000 followers |       T      |       F      |       F      |
+|highly-relevant for user|       T      |       T      |       F      |
+|serve add?              |       T      |       T      |       T      |  
