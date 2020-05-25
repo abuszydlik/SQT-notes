@@ -16,7 +16,7 @@
 There is 14 sneaky paths.
 
 ## Exercise 4
-<img src=images/model-based-4.png>
+<img src=images/model-based-3.png>
 
 ## Exercise 5
 In total there is 6 transitions. The given test includes 4 transitions so its coverage is 4/6 = 66.6%.
