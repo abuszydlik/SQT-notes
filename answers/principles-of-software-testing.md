@@ -1,4 +1,4 @@
-# Principles of software testing
+# Principles of software testing answers
 ## Exercise 1  
 Mark: Hey, Jane, I just observed a __failure__ in our software: if the user has multiple surnames, our software doesn't allow them to sign in.  
 Jane: Oh, that's awful. Let me debug the code so that I can find the __fault__ .  
