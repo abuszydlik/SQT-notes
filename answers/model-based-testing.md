@@ -62,7 +62,7 @@ In this case we actually need 6 tests because there are 6 possible outcomes of t
 <img src=images/model-based-6.png>
 
 ## Exercise 12
-<img src=images/model-based-7.png>
+<img src=images/model-based-9.png>
 
 ## Exercise 13
 <img src=images/model-based-8.png>
