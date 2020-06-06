@@ -278,7 +278,6 @@ High quality software is only achieved when the system is designed with testabil
 _Monitoring_ is one of the ways to execute testing in production where the goal is to check the overall health of the system. It is important to note that effective monitoring should focus on only some core metrics such as an increase in the error rate or increase in latency. There currently exists a lot of research into log engineering, infrastructure and analysis.
 
 # WEB TESTING
-
 ## Characteristics of web applications
 1. Front-end is usually written in JavaScript:
    * programming paradigms may differ
@@ -353,7 +352,6 @@ _Given_/_When_/_Then_ clauses can consist of several shorter statements linked w
 Although they are closely related, __usability__ refers more to making the application easy to use while __accessibility__ is about making the content accessible for people with disabilities. _Web Content Accessibility Guidelines_ offer a summary of what the developer should take into account while designing an application. Additionally tools like _Axe_ can offer some help when diagnosing accessibility problems. Nevertheless a large part of testing still has to be conducted manually.
 
 # TEST-DRIVEN DEVELOPMENT
-
 ## The TDD cycle
 _Test-driven development_ offers an alternative approach to writing code. With given requirements we start by creating test cases which will take us closer to fulfilling the requirements. If the test fails, we work on the production code to add new features and make the test pass. Once this is achieved, we start refactoring the test and production code to increase its quality. Then the entire process is repeated until all requirements are fulfilled.
 
@@ -371,3 +369,39 @@ _Test-driven development_ offers an alternative approach to writing code. With g
 * use it when you face a complex problem in which you lack experience
 * do not use it if there is nothing to be learned or explored (problem is familiar)
 
+# TEST CODE QUALITY AND ENGINEERING
+## The FIRST Properties of Good Tests
+* Fast - good tests should be fast to encourage the developer to run them often. Possible solutions for slow tests include usage of mocks/stubs, redesigning the production code or creating a new test suite.
+* Isolated - ideally a single test method should test just a single functionality. Complex tests make it more difficult to notice which component is failing, so big test methods should be broken down. Furthermore it is necessary that one test does not depend on any others to run (tests should clean up after running).
+* Repeatable - a single test should always give the same result because developers tend to lose their trust if a test is flaky. Common causes of flakiness include dependencies, asynchronicity and concurrency.
+* Self-validating - tests should validate the result themselves by always including the assertion.
+* Timely - the development team should have a mindset that their tests should run as often as possible.
+
+## Test desiderata
+According to Kent Beck good tests should be:
+* isolated: tests should return the same results regardless of the order in which they are run.
+* composable: if tests are isolated, then I can run 1 or 10 or 100 or 1,000,000 and get the same results.
+* fast: tests should run quickly.
+* inspiring: passing the tests should inspire confidence.
+* writable: tests should be cheap to write relative to the cost of the code being tested.
+* readable: tests should be comprehensible for their readers, and it should be clear why they were written.
+* behavioural: tests should be sensitive to changes in the behaviour of the code under test. If the behaviour changes, the test result should change.
+* structure-insensitive: tests should not change their result if the structure of the code changes.
+* automated: tests should run without human intervention.
+* specific: if a test fails, the cause of the failure should be obvious.
+* deterministic: if nothing changes, the test result should not change.
+* predictive: if the tests all pass, then the code under test should be suitable for production.
+
+~~To remember all mentioned properties, one can use the anagram __bi-dwarf's pics__~~
+
+## Test code smells
+_Code smells_ relate to symptoms that indicate possible deep problems in the source code, according to research they negatively influence comprehensibility and maintainability of software system. Some examples of test code smells include:
+* __Code duplication__ - to reduce duplication developers are encouraged to use `@BeforeEach` and `@ParameterizedTest`, additionally it is necessary to refactor the code and extract duplicated pieces to private methods or external classes.
+* __Assertion Roulette__ - assertions and their failures should be easy to understand. If the test requires a complicated assertion statement, the developer should abstract it in a customized assert instruction. Other possibilities include writing comments to explain assertions and minimizing the number of assertions per test method.
+* __Resource Optimism__ - happens when a test assumes that a necessary resource is readily available. To avoid this smell you need to ensure that the test itself is responsible for setting up the state, furthermore developers can avoid external resources (by mocking and stubbing) or providing additional robustness to tests. It is also important to use a proper CI tool like _Jenkins_, _CircleCI_ or _Travis_.
+* __Test Run War__ - happens when two tests are fighting over the same resource, for example a centralized database. It is necessary to keep the tests _isolated_ by for example providing each developer with their own instance of the database.
+* __General Fixture__ - a fixture is a set of inputs used to exercise the component under test, general fixture happens when a fixture is too complex and different tests have intersecting fixtures. To avoid this smell it may be usefyl to employ _Test Data Builder_ pattern.
+* __Indirect tests and eager tests__ - a test should be as cohesive and as focused as possible. It is best practice to ensure that only a single unit is tested (by employing mocks, making sure that the assertion focuses on class under test, or that failures in dependencies are clearly explained) and that only a single behavior is tested.
+* __Sensitive Equality__ - test code should be as resilient as possible to the implementation details of component under test. It may be better to create a method only to facilitate a test instead of relying on sensitive assertions.
+* __Inappropriate assertions__ - assertions should be chosen in such a way that their error messages make it easy to undersand what went wrong. Good assertion is legible and as specific as possible.
+* __Mystery Guest__ - tests which rely on external dependencies (guests) should make it explicit to the developer. It is necessary to give proper error messages that differentiate between a fail in the expected behaviour and a fail due to a problem in the dependency.
