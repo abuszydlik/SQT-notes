@@ -273,3 +273,81 @@ _Ports and adapters (hexagonal architecture)_ - idea that domain depends on _por
 5. static methods decrease testability; if a system has to depend on a static method then a layer of abstraction should be added on top of it (e.g. when using external frameworks and libraries)  
 
 High quality software is only achieved when the system is designed with testability in mind.
+
+# MONITORING
+_Monitoring_ is one of the ways to execute testing in production where the goal is to check the overall health of the system. It is important to note that effective monitoring should focus on only some core metrics such as an increase in the error rate or increase in latency. There currently exists a lot of research into log engineering, infrastructure and analysis.
+
+# WEB TESTING
+
+## Characteristics of web applications
+1. Front-end is usually written in JavaScript:
+   * programming paradigms may differ
+   * very important to design for testability, for example mixing JS and HTML makes it difficult to test
+   * helpful to use a framework (React, Angular, Vue.js) to achieve proper structure when creating new project
+
+2. Application follows the client-server model:
+   * communication over HTTP requires an interface which reduces coupling
+   * important to conduct end-to-end tests which require a server running in a proper state
+
+3. Everyone can access the application which requires specific testing scenarios:
+   * usability testing - how easy it is to use the application
+   * accessibility testing - can people with disabilities use the application comfortably
+   * load testing - can the application support a large number of concurrent users
+   * security testing - what happens when a user has malicious intent
+
+4. Front end runs in a browser:
+   * cross-browser testing is required to ensure that the application will work in all supported browsers
+   * responsive web design should be tested to ensure that the web pages are rendered properly in different sizes on various devices
+   * HTML should be designed for testability so that single elements can be selected and UI can be tested
+   * UI component testing should be used that triggered events lead DOM into an expected state
+   * snapshot testing is used to check whether the UI does not change unexpectedly
+   * end-to-end tests can be performed for example with Selenium WebDriver and Cypress
+   
+5. Many web applications are asynchronous:
+   * while the browser is awaiting for results, the application can still be used
+   * waiting in tests can lead to unwanted flakiness
+   
+## Design for testability in web applications
+There exist several heuristics used in order to achieve a testable code:
+   * JavaScript code should be stored in a separate file (and not left inline with HTML)
+   * logic and user interface code should be separate (achieved by splitting functions)
+   * elements should be easy to locate with query selectors (for example by using labels)
+   * good structure can be achieved by writing a proper MVC implementation
+
+## Unit testing frameworks
+In web development there is no industry standard framework. If the system at hand was previously written with a specific testing framework then it is usually best to stick to that. On the other hand when choosing a framework for a new application, it may be a good idea to use a one with large following for easier support. Some libraries/frameworks recommend a specific testing framework - for example the recommended testing framework for _React_ applications is _Jest_.
+
+_Jest_ syntax example:
+``` javascript
+describe('dateToString', () => {
+  test('returns the date in the form "yyyy-MM-dd"', () => {
+    var date = new Date(2020, 4, 1);   // May 1st, 2020
+    expect(dateToString(date)).toEqual("2020-05-01");
+  });
+});
+```
+In Jest `describe`can be used to group several tests together, `test` is used to write a single test case.
+To test UI components in a virtual DOM it is beneficial to use `react-testing-library` which enables testing components in a way that the user would interact with them with functions like `getByText` to look up an element. Jest enables mocking of functions with `jest.mock('./{}')` which is especially useful for testing HTTP requests to back end.
+
+## Snapshot testing
+Snapshot testing is a good way to test whether UI behaves as expected. During the first run, a snapshot is taken and saved. In subsequent runs the rendered output is compared to the snapshot, the test fails if the versions differ and the developer is presented with differences.
+
+## End-to-end testing
+An end-to-end test for a web application contains a series of events that should be as similar to the flow of an actual user as possible. Manual tests are sometimes unavoidable but there exist good tools to automate at least part of the work including _Selenium WebDriver_ (the WebDriver API is now a W3C standard and several implementations exist) which acts as a remote control for the browser, instructing it what should be performed. WebDriver tests can be written in several supported languages including Java. By running the tests on different browsers we can additionally perform _cross-browser testing_. Another similar tool is _Cypress_ which integrates more closely with the browser and presents some additional features.
+
+## Page Objects and State Objects
+_Page objects_ are an abstraction created on top of the web application. They include only methods that are needed in the tests and are used to increase their readability. Methods in _page objects_ relate directly to the application rather than HTML elements.
+
+It is also possible to go a step further and make the page objects correspond to the states in a _navigational state machine_ which describes the flow through the application. Each page is represented by a state. We call this specific type of page object a _state object_. Tests can be described by inspection, trigger, and self-checking methods.
+
+## Behaviour-driven desing
+In _behaviour-driven design_ the system is created based on a scenarions written in natural language. The scenarios usually follow a standard format:
+   1. Title of the scenario
+   2. Given ... : conditions that should hold at the start
+   3. When ... : describes the triggering event 
+   4. Then ... : result at the end
+   
+_Given_/_When_/_Then_ clauses can consist of several shorter statements linked with _And_. A scenario covers a single transition so to get an overview of the whole system, the entire state machine is still required.
+
+## Usability and accessibility testing
+Although they are closely related, __usability__ refers more to making the application easy to use while __accessibility__ is about making the content accessible for people with disabilities. _Web Content Accessibility Guidelines_ offer a summary of what the developer should take into account while designing an application. Additionally tools like _Axe_ can offer some help when diagnosing accessibility problems. Nevertheless a large part of testing still has to be conducted manually.
