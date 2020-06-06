@@ -351,3 +351,23 @@ _Given_/_When_/_Then_ clauses can consist of several shorter statements linked w
 
 ## Usability and accessibility testing
 Although they are closely related, __usability__ refers more to making the application easy to use while __accessibility__ is about making the content accessible for people with disabilities. _Web Content Accessibility Guidelines_ offer a summary of what the developer should take into account while designing an application. Additionally tools like _Axe_ can offer some help when diagnosing accessibility problems. Nevertheless a large part of testing still has to be conducted manually.
+
+# TEST-DRIVEN DEVELOPMENT
+
+## The TDD cycle
+_Test-driven development_ offers an alternative approach to writing code. With given requirements we start by creating test cases which will take us closer to fulfilling the requirements. If the test fails, we work on the production code to add new features and make the test pass. Once this is achieved, we start refactoring the test and production code to increase its quality. Then the entire process is repeated until all requirements are fulfilled.
+
+## Advantages of TDD
+* prevents the developer from writing code that isn't directly required
+* easier to control the pace of writing production code
+* test cases are derived from requirements (possible to validate and verify at the same time)
+* code is testable from the beginning
+* quick feedback on the code (possible to easily identify new problems relating to small amount of code)
+* encourages developers to work in small steps and according to a single strategy
+* feedback on design (makes it easier to write testable code)
+
+## When (not) to use test-driven development
+* use it when you don't know how to design a particular part of the system
+* use it when you face a complex problem in which you lack experience
+* do not use it if there is nothing to be learned or explored (problem is familiar)
+
