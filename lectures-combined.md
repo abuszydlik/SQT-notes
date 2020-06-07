@@ -527,3 +527,57 @@ _Exploratory testing_ is a style of testing which encourages the developer to as
 * tests cannot be reviewed in advance
 * difficult to show which tests have been performed
 * tests do not necessarily behave in the same way when revisited
+
+# MUTATION TESTING
+## Fault detection capability
+_Fault detection capability_ is an adequacy metric which indicates the test's ability to reveal faults in the SUT. It describes the quality of a test suite better than just coverage metrics - if we want a test to be adequate according to this criterion, it has to have a meaningful test oracle (assertions). Fault detection capability is the main idea behind __mutation testing__ where we change small parts of the code (_mutants_) and check whether the tests can find the new fault - this enables us to determine the quality of a test suite. Mutant detection is positively correlated with real fault detection (independent of coverage).
+A popular tool for mutation testing is _PIT_ which can be run through command-line, Gradle or IntelliJ.
+
+## Hypotheses for mutation testing
+There exist two hypotheses that give an answer to question _what size should the introduced mutants be?_:
+* _Competent Programmer Hypot hesis_ - given a certain specification, the programmer creates a software that is either correct or differs from a correct program by a combination of simple errors
+* _Coupling Effect_ - test cases that detect simple faults will also detect complex faults
+
+We conclude that mutants' size should be small - according to CPH the actual faults will also be small, moreover according to Coupling Effect hypothesis our small errors will be able to detect larger errors.
+
+## Terminology
+* _mutant_ - given a program P, a mutant called P' is obtained by introducing a syntactic change to P. A mutant is killed if a test fails when executed with the mutant
+* _syntactic change_ - a small change in code which still lets it compile and run
+* _change_ - alteration to the code that mimics typical human mistakes
+
+## Automating the mutation process
+A _mutation operator_ is a grammatic rule that can be used to introduce a syntactic change:
+* __real fault based operators__ - very similar to defects seen in the past for the same kind of code
+* __language-specific operators__ - made specifically for some programming language (inheritance in Java)
+
+Some common mutation operators include:
+* __Arithmetic Operator Replacement__ - replaces arithmetic operators (`+`, `-`, `*`, `/`, `%`) 
+* __Relational Operator Replacement__ - replaces relational operators (`<`, `>`, `==`, `!=`, `>=`, `<=`)
+* __Conditional Operator Replacement__ - replaces conditional operators (`&`,`&&`, `|`, `||`, `!`, `^`)
+* __Assignment Operator Replacement__ - replaces assignment operators (`=`, `+=`, `-=`, `/=`)
+* __Scalar Variable Replacement__ - replaces each variable reference by another reference declared in code
+
+And specific for Java:
+* __Access Modifier Change__
+* __Hiding Variable Deletion__
+* __Hiding Variable Insertion__
+* __Overriding Method Variable__
+* __Parent Constructor Deletion__
+* __Declaration Type Change__
+
+## Mutation analysis and testing
+_Mutation testing_ is carried out in an automated way where different mutants are created out of a program and a common test suite is ran against them. We keep track of the number of mutants and after each run we count the number of mutants killed to calculate the __mutation score__ = killed mutants/mutants. Assessing the quality of a test suite by its mutation score is called __mutation analysis__, we perform __mutation testing__ by using the analysis to improve quality of the test suite.
+
+## Equivalent mutants
+_Equivalent mutants_ are mutants that are impossible to kill because they make P' behave in the same way as P. This means that test suite will for P' will give the same results as for P. This means we should calculate a _mutation score_ = killed mutants/non-equivalent mutants. Unfortunately detecting equivalent mutations is an undecidable problem.
+
+## Reducing cost (mutation testing heuristics)
+* we only have to run the tests that cover the changed statement
+* once a test kills a mutant, we do not have to run other test cases (doesn't matter how many tests kill it)
+* run the test suite against a subset of all mutants (similar replacements generate similar mutants)
+* there exist other heuristics to descrease the execution time (e-selective, cluster mutants)
+
+# SEARCH-BASED SOFTWARE TESTING
+_Search-based testing_ techniques are solutions that automatically generate a test suite for a given program, the tools are getting better but this is a very complex topic.
+
+## Random test case generation
