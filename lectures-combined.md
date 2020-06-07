@@ -581,3 +581,12 @@ _Equivalent mutants_ are mutants that are impossible to kill because they make P
 _Search-based testing_ techniques are solutions that automatically generate a test suite for a given program, the tools are getting better but this is a very complex topic.
 
 ## Random test case generation
+This is an idea where the test cases are produced completely at random until a given time is reached. After timeout the tool might have produced a huge number of test cases hoping for a large coverage. A well-known tool for random test case generation is _Randoop_
+
+## Search-based software testing
+Random test generation does not work well for complicated programs but it is possible to model "finding test cases" as an _optimization problem_ to achieve better results. We start by choosing a branch that we need to cover and then the program generates random test cases. If a test case covers the required branch it gets returned; if not then the tool analyses how far each case was from covering the branch and based on that creates a new generation of tests. Search continues after the case is found or budget gets exhausted (this is basically a genetic algorithm). The most popular tool for search-based generation is _EvoSuite_.
+
+Unfortunately tools like _Randoop_ and _EvoSuite_ cannot know whether the program produces a correct output for a given input - this means that they still require developer's attention to analyze the results. Nevertheless some bugs like throwing Exceptions can be spotted by the tool itself.
+
+## Automated test generation in practice
+There is movement in industry towards automated test generation tools (Facebook is developing _Sapienz_) however for now they are only a complementary testing technique.
