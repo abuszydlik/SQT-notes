@@ -422,3 +422,36 @@ _Flaky tests_ are tests that sometimes pass and sometimes fail even though the d
 * dependence on external or shared resources
 * improper timeouts
 * hidden interaction between test methods
+
+# STATIC TESTING
+_Static testing_ analyses the code without executing the application, it can quickly find _low-hanging fruit_ bugs in the source code such as deprecated functions. Static analysis tools are scalable and require less time to set up. They include _PMD_, _Checkstyle_, and _Checkmarx_.
+
+## Pattern matching
+It is a code checking approach that searches for pre-defined regular expressions (regex). Depending on the logic either a positive/negative reaction is returned indicating the final state or all code snippets that matched the pattern are returned.
+
+Regex are usually represented using __Finite State Automaton__. We move from one state to the next by taking transitions matching the input symbol. There exist several limitations to regular expressions:
+* they cannot count (each scenario has to be programmed explicitly)
+* they don't take semantics into account (many false positives)
+
+## Syntax analysis
+This is a more advance approach which works by deconstructing input code into a stream of characters which are then turned into a _Parse Tree_. Parse Tree is a concrete instantiation of the code where each character is explicitly placed in the tree, in _Abstract Syntax Tree_ the syntax characters (semi-colon, parentheses, etc) are removed.
+
+Static analysis tool based on syntax analysis takes an AST and a rule-set as input and raises an alarm in case some rule is violated. They are used by compilers to find semantic errors but can be also used for program verification, type-checking and transpiling programs.
+
+## Performance of static analysis
+Typically static analysis does not produce false negatives (_sound results_) because they can access the whole codebase and can track all possible execution paths. On the other hand they produce false positives (_non-complete results_) because they don't take into account how the application actually behaves and check all states.
+
+# FUZZ TESTING
+_Fuzzing_ is a dynamic testing technique that bombards the System Under Test with randomly generated inputs hoping that a crash will occur. It can discover bugs originating from failing assertions, memory leaks or improper error handling but they can't identify an underlying flaw.
+
+__Random fuzzing__ is the most primitive type of fuzzing with no assumptions about the type and format of the input. It can be used for exploration but takes long time to generate meaningful test cases so most of the time _structured input_ is specified. There exist two strategies of structured fuzzing:
+1. __Mutation-based fuzzing__ creates mutations (replacing or appending characters etc) from given example inputs. It is important to note that some inputs won't be valid. Examples of mutation-based fuzzers include _ZZuf_ (bit-flipping) and _American Fuzzy Lop_ (genetic algorithms).
+2. __Generation-based fuzzing__ takes a data model as input and generates test cases that only alter the values while still conforming to the specified format. An example of such fuzzer is _PeachFuzzer_. 
+
+Generation-based fuzzers are less generalizable and more difficult to set up but they increase test coverage and produce higher quality test cases.
+
+## Maximizing code coverage
+An ideal fuzzer maximizes code coverage but only in such a way that tests a wide range of inputs, there are several ways to obtain maximal code coverage in less time:
+* _multiple tools_ - different fuzzers perform the mutations in different way so they can be run together to cover more input space
+* _telemetry as heuristics_ - if the code structure is known, then telemetry about code coverage can constrain the applied mutations
+* _symbolic execution_ - we can specify potential values of variables that allow the program to reach a desired path using _symbolic variables_. We can assign symbolic values to those variables and then construct a formula of a _Path predicate_ that answers a question _given the path constraints, is there any input that satisfies the path predicate?_. A popular tool for symbolic execution is _Z3_. It isn't always possible to determine the potential values of a variable due to _halting problem_.
