@@ -405,3 +405,20 @@ _Code smells_ relate to symptoms that indicate possible deep problems in the sou
 * __Sensitive Equality__ - test code should be as resilient as possible to the implementation details of component under test. It may be better to create a method only to facilitate a test instead of relying on sensitive assertions.
 * __Inappropriate assertions__ - assertions should be chosen in such a way that their error messages make it easy to undersand what went wrong. Good assertion is legible and as specific as possible.
 * __Mystery Guest__ - tests which rely on external dependencies (guests) should make it explicit to the developer. It is necessary to give proper error messages that differentiate between a fail in the expected behaviour and a fail due to a problem in the dependency.
+
+## Test readability principles
+1. structure
+   * Arrange, Act, and Assert should be followed
+   * clearly separated parts make it easier to see what is happening in the test.
+2. comprehensibility of information
+   * information present in the test should be easy to understand
+   * variables should have descriptive names (when a value isn't important you can call it "any...")
+   * assertions should be as specific as possible (consider AssertJ)
+   * classes with a lot of parameters can be built with a Test Data Builder design pattern (a class that returns itself in methods and supports method chaining)
+   * code should be commented where it is not expressive enough
+
+## Flaky (erratic) tests
+_Flaky tests_ are tests that sometimes pass and sometimes fail even though the developer hasn't made any changes in underlying production code. They have negative impact on the productivity because developers tend to lose confidence in their test suites when faced with presence of flaky tests. There are many reasons why a test may be flaky, including for example:
+* dependence on external or shared resources
+* improper timeouts
+* hidden interaction between test methods
