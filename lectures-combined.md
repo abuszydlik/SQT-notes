@@ -455,3 +455,75 @@ An ideal fuzzer maximizes code coverage but only in such a way that tests a wide
 * _multiple tools_ - different fuzzers perform the mutations in different way so they can be run together to cover more input space
 * _telemetry as heuristics_ - if the code structure is known, then telemetry about code coverage can constrain the applied mutations
 * _symbolic execution_ - we can specify potential values of variables that allow the program to reach a desired path using _symbolic variables_. We can assign symbolic values to those variables and then construct a formula of a _Path predicate_ that answers a question _given the path constraints, is there any input that satisfies the path predicate?_. A popular tool for symbolic execution is _Z3_. It isn't always possible to determine the potential values of a variable due to _halting problem_.
+
+# SECURITY TESTING
+## Software testing vs security testing
+_Software testing_ is used to check the correctness of the implemented functionality, while the goal of _security testing_ is to find bugs (vulnerabilities) that can potentially allow an intruder to make the software behave insecurely. Often, a software bug can be exploited as a security vulnerability. They are especially high-value because they have huge impact on the functionality of application, and cause reputation and monetary loss for the company. 
+
+## Java vulnerabilities
+There exist many sources aggregating discovered vulnerabilities information about Java including for example _NIST National Vulnerability Database_. NVD assigns each vulnerability a unique __Common Vulnerabilities and Exposures__ identifier, a __Common Weakness Enumeration__ that determines the type of vulnerability, and a __Common Vulnerability Scoring System__ score that describes the severity. 
+
+For JRE top 2 vulnerability types are _denial of service_ and _bypassing control_, while for Android they include _code execution in unauthorized place_ and _overflows_.
+
+## Common Java vulnerabilities use cases
+* code injection - exists for example when resources are loaded dynamically from an existing website, if an attacker gains control over the resource then they can introduce malicious code into the application at run-time (_update attack_ in Android). Unfortunately static analysis tools fail to detect this attack.
+* type confusion - stems from insufficient type checking in the application, an attacker can cast object into an arbitrary type and escalate their privileges by bypassing the Java Security Manager. Then they are able to execute whatever code they want (`tryfinally()` _method in Reflection API of Hibernate ORM_).
+* arbitrary code execution (ACE) - Java components implemented in native code are vulnerable to buffer overflows (for example graphics libraries which use native code for fast rendering) due to improper handling of "special code elements". When this happens, the attacker can corrupt pointers and make the application run arbitrary code (_GIF library in Sun JVM, XML deserialization in XStream library_). When ACE is triggered remotely it is called a Remote Code Execution which works in the same way (_Spring Data Commons library_).
+
+## Secure Software Development Life Cycle
+_Secure-SDLC_ is a model which promotes security testing in each stage of development:
+1. _planning phase_ - assess risk and design of potential abuse cases.
+2. _analysis phase_ - explore threat landscape and model the attackers (who? how?).
+3. _design phase_ - take into account previously made assumptions while designing the application.
+4. _implementation phase_ - provide secure implementation of the application
+5. _testing and integration phase_ - perform security testing and code reviews
+6. _maintenance phase_ - fix bugs and keep eye on the CVE database to update vulnerable components.
+
+Because _Secure-SDLC_ is not a one time process, security testing should be integrated into CI framework.
+
+_Penetration testing_ (authorized simulated attack) is often not enough because it does not stress-test individual components, lack of Secure-SDLC leads to vulnerabilities being patched quickly and increases the risk of failure after deployment.
+
+## Assessment criteria of security testing techniques
+1. __soundness__ - there should be no False Negatives (no vulnerability is skipped)
+2. __completeness__ - there should be no False Positives (no false alarm is raised)
+3. __interpretability__ - results can be traced to a solid cause
+4. __scalability__ - tool can be used for a large application without losing performance.
+
+Ideal tool would be both sound and complete but in reality you need to strike a balance between FNs and FPs. Low FNs are perfect for banking apps where a missed vulnerability can have grave consequences, low FPs are perfect for applications that don't have enough manpower to evaluate correctness of each result.
+
+## Static Application Security Testing
+Techniques of SAST aim to find vulnerabilities without running the app (work especially well for bugs for which signatures can be made - SQL injection and XSS). Tools include _SpotBugs_, _FindSecBugs_ and _Coverity_. Important to note that SAST isn't limited to code checking, for example __risk-based testing__ where worst-case scenarios are modelled can also be done statically.
+* pattern matching - can find security issues such as _misconfigurations_, _bad imports_ and _calls to dangerous functions_.
+* Abstract Syntax Trees - can find code that violates security specifications (_format string attack_).
+* Control-flow Graphs - offer an over-estimation of a possible execution, show _unintended transitions_ and _unreachable pieces of code_ that can lead to the application hanging.
+* Data Flow Diagrams - tool built on top of a CFG that shows how data flows through the program, they can be used to detect _sanitization problems_ and some _code injection vulnerabilities_.
+
+Data Flow Diagrams enable tracking a user-controlled variable (__source__) and other variables (__sinks__) during the execution of a program. We say that _source variables are tainted_ (they can be malicious) and _all sinks are untainted_ (they should be secure). The DFA lets us prove that (a) no tainted data is used, and (b) no untainted data is expected; an alert is raised when either of the conditions is violated. One application of DFA is called the __reaching definitions__ where all possible values of a variable are identified - it can detect _type confusion vulnerabilities_ and _use-after-free vulnerability_ (usage of a variable after it has been garbage collected).
+
+## Dynamic Application Security Testing
+Techniques of DAST execute an application and observe its behaviour (work well for crashes and hangs leading to Denial of Service). DAST usually does not access the source code so it can only test for functional code paths - search-based algorithms are proposed to maximize the code coverage. DAST tools are more difficult to set up and slower but they offer less FPs and more advanced results/ Tools include _BurpSuite_, _SunarQube_ and _ZAP_.
+* taint analysis - dynamic version of DFA where we track how variables that we want to _taint_ propagate through the codebase, it requires __code instrumentation__ by adding hooks to variables of interest (for example with _Pin_). Another tool for taint analysis is _Panorama_ which detects keyloggers and spyware.
+* dynamic validation - functional testing of the SUT based on system specifications; model checking is similar in that the specifications are cross-checked with a model based on SUT.
+* penetration testing - ethical hacking done from the perspective of an attacker (generally black-box). _MetaSploit_ is a powerful pen testing framework which contains a __vulnerability scanner__ and __password cracker__ among others.
+* behavioral analysis - aims to gain insights about the software by generating logs and analyzing them, this is particularly helpful for finding abnormal behaviors when source code and binary aren't accessible.
+* reverse engineering - tries to reveal the internal structure of the application (convert black-box into a white-box). It is especially usefyl when converting legacy software into a modern one or understanding competitor's product, behavioral logs can be used to automate reverse engineering.
+* fuzzing - has been previously used to uncover security vulnerabilities in PuTTY, openSSH, and sqlite. Additionally it was used to find _Stagefright_ which affected 1 billion Android smartphones. A good tool for fuzzing is _Sage_.
+
+## Performance analysis of SAST and DAST
+* SAST tools create a lot of FPs (no access to run-time) and FNs (don't access some parts of code)
+* DAST reduces FPs and FNs but it isn't perfect either
+* SAST is more white-box but there exist interpretable dynamic testing techniques
+* SAST is more scalable (faster), DAST is more generalizable.
+
+# EXPLORATORY TESTING
+_Exploratory testing_ is a style of testing which encourages the developer to ask how software will handle particular test cases and learn in the process how the system acutally works. It is often thought of as a black-box testing technique. The quality of exploratory testing heavily depends on the tester's ability to invent new test cases and find defects. In this style of testing expectations with regards to the outcomes are generally open, the tester evaluates whether a particular behavior was correct or not. It can be executed at any point of Secure-SDLC but brings best results when performed after the product is finished.
+
+## Advantages of exploratory testing
+* less preparation is required
+* important bugs can be found quickly
+* can be very realistic because it simulates user experiencing the program
+
+## Disadvantages of exploratory testing
+* tests cannot be reviewed in advance
+* difficult to show which tests have been performed
+* tests do not necessarily behave in the same way when revisited
